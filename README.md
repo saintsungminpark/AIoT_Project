@@ -31,5 +31,5 @@ arduino and raspberry
 # 아두이노센서
 
 심장박동
-온도습도
+온/습도
 자이로
