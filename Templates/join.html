@@ -1,0 +1,65 @@
+﻿{% extends 'layout_join.html' %}
+ 
+{% block content %}
+
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+    <!-- Tabs Titles -->
+    <!-- {% if refresh_token != None %}
+        <a href="https://kauth.kakao.com/oauth/authorize?client_id=8dd5d0eab9cb12d172d1e4eaf5e72b7c&redirect_uri=http://192.168.0.136:5000/oauth&response_type=code&scope=talk_message">
+
+          Kakao login
+        </a>
+
+    {% elif refresh_token %}
+            {% endif %} """} -->
+
+        <!-- Icon -->
+        <div class="fadeIn first">
+            <img src="{{ url_for('static', filename='images/baby4.jpg') }}" id="icon" alt="User Icon" />
+        </div>
+        
+        <!-- Login Form -->
+        <form action="./register" method="get">
+            <input type="text" id="regi_name" class="fadeIn second" name="regi_name" placeholder="Name">
+            <input type="text" id="regi_age" class="fadeIn third" name="regi_age" placeholder="Age">
+            <input type="submit" class="fadeIn fourth" name="btn_register" value="Join">
+
+            {% if refresh_token %}
+                <input type="hidden" name="kakao_token" value="{{refresh_token}}">
+
+            {% else %}
+                <input type="button" value="Kakao login" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=8dd5d0eab9cb12d172d1e4eaf5e72b7c&redirect_uri=http://192.168.0.115:5000/oauth&response_type=code&scope=talk_message'" style="color:black; background-color:#f9df33">
+
+            {% endif %}
+        </form>
+
+        <!-- Remind Passowrd -->
+        <div id="formFooter">
+            <a class="underlineHover" href="#">Forgot Password?</a>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+
+        if ("{{name}}" != '' && "{{age}}" != '' ){
+            alert("이름: "+"{{name}}" + ", 나이: " + "{{age}} \n" + "등록완료!")
+        }
+
+        // $('#btn_kakao').click(function(){
+        //     window.location.href = "https://kauth.kakao.com/oauth/authorize?client_id=8dd5d0eab9cb12d172d1e4eaf5e72b7c&redirect_uri=http://192.168.0.136:5000/oauth&response_type=code&scope=talk_message"
+        // })
+    })
+
+    
+</script>
+
+{% endblock %}
+<!--    <form action="http://127.0.0.1:5000/check" method="get">-->
+<!--        이름 : <input type="text" name = "name"><p>-->
+<!--        나이 : <input type="text" name = "age"><p>-->
+<!--        <input type="submit" name="register" value="아기등록하기" >-->
+<!--    </form>-->
+<!--    <input type="button" value="Go back!" onclick="history.back()">-->

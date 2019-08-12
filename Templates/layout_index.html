@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset charset="UTF-8">
+    <meta name="viewport" content="width-device-width" , initial-scale="1">
+    <title>{{ title }}</title>
+    
+    <!-- for jquery -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.js" integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    
+    <style>
+        .jumbotron.a {
+            margin-top: 30px;
+            height: 478px;
+            /*background-image: url('images/6.jpg');*/
+            background-image: url("{{ url_for('static', filename='images/6.jpg') }}");
+            background-size: cover;
+            color: black;
+            box-shadow: 15px 15px 15px 0px rgb(0, 0, 0, 0.1) !important;
+        }
+
+        .jumbotron.b {
+            height: 478px;
+            background-image: url("{{ url_for('static', filename='images/7.jpg') }}");
+            /*background-image: url('images/7.jpg');*/
+            background-size: cover;
+            color: white;
+            box-shadow: 15px 15px 15px 0px rgb(0, 0, 0, 0.1) !important;
+        }
+
+        .content {
+            margin: 125px 0px;
+        }
+
+        .op1 {
+            zoom: 1;
+            filter: alpha(opacity=80);
+            opacity: 0.5;
+        }
+
+        .op2 {
+            zoom: 1;
+            filter: alpha(opacity=80);
+            opacity: 0.6;
+        }
+    </style>
+    
+    <!-- example for js file link -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/custom.js') }}" ></script>
+</head>
+
+  <body>
+
+    <!-- here for index.html -->
+    {% block content %}{% endblock %}  
+
+  </body>
+
+</html>

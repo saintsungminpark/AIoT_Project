@@ -1,0 +1,64 @@
+{% extends 'layout_index.html' %}
+ 
+{% block content %}
+      <div class="container">
+         <div class="jumbotron a">
+            <div class="content">
+               <div class="op1">
+                  <h1 class="text-center op"><span style="color:black;"><b>Mom & Baby<b></span></h1>
+                  <p class="text-center"><i>"Only the best for mommy's precious"</i></p>
+                  </div>
+               <p class="text-center">
+                  
+                  <a id ="btn_create" class="btn btn-danger btn-lg text-light" role="button">Create Your Account
+            
+                  </a>
+               </p>
+            </div>
+         </div>
+      </div>
+
+      <div class="container">
+         <div class="jumbotron b">
+            <div class="content">
+               <div class="op2">
+                    <h1 class="text-center"><span style="color:white;"><b>Baby Care System</b></span></h1>
+                    <p class="text-center"><i>"All in one for your baby care system"</i></p>
+               </div>
+               <p class="text-center"><a class="btn btn-info btn-lg text-light" id = "btn_search" role="button">Login & Search</a></p>
+            </div>
+         </div>
+      </div>
+<!--   <style>-->
+<!--       body{-->
+
+<!--           background-image: url(static/images/bg2.png);-->
+<!--           background-size: cover;-->
+<!--       }-->
+<!--   </style>-->
+      <footer>
+         <div class="container">
+            <h5 class="text-center">
+               <a href="mailto:webmaster@somedomain.com">
+                  help@babycare.com
+               </a><br>
+                  185, Digital-ro, Guro-gu, Seoul, Republic of Korea
+            </h5>
+              <p class="text-center">
+                 <small>Copyright &copy; 2019 BabyCare</small>
+              </p>
+         </div>
+      </footer>
+
+<script type="text/javascript">
+  $(function(){
+    $('#btn_create').click(function(){
+      location.href = './join' 
+    })
+    $('#btn_search').click(function(){
+      location.href = './search' 
+    })
+
+  })
+</script>
+{% endblock %}

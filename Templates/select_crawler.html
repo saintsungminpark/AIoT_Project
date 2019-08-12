@@ -1,0 +1,391 @@
+
+{% extends 'layout_search.html' %}
+
+{% block content %}
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <!-- Tabs Titles -->
+
+        <!-- Icon -->
+        <div class="fadeIn first">
+            <img src="{{ url_for('static', filename='images/logo6.jpg') }}" id="icon" alt="User Icon" />
+        </div>
+
+        <!-- Login Form -->
+        <form action="./select_crawler" method="get">
+            <input type="text" id="search_name" class="fadeIn second" name="select_product" placeholder="Product">
+<!--            <input type="text" id="search_age" class="fadeIn third" name="age" placeholder="Age">-->
+            <input type="submit" class="fadeIn fourth" name="register" value="Search" id= 'btn_search'>
+        </form>
+
+        <!-- Remind Passowrd -->
+<!--        <div id="formFooter">-->
+<!--            <a class="underlineHover" href="./crawler">Search for product</a>-->
+            <!-- <input type="submit" class="fadeIn fourth" name="register" value="TEST Search BTN" id= 'btn_search_test'> -->
+
+        </div>
+    </div>
+
+</div>
+
+<!-- <div id='hidden_div' style="display:none">
+  <section>
+      <div class="container">
+          <div class="row">
+              <div class="row pt-5">
+                  <div class="col-md-12 align-self-center">
+                      <h3>Heart Rate</h3>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <section>
+      <div class="container">
+          <div>
+              <div class="row">
+                  <div class="col-md-6">
+                      <canvas width="500" height="400" id="myHeartChart"></canvas>
+                  </div>
+                  <div class="col-md-6">
+                      <div><h5>현재 아기의 심박수(bpm)</h5></div>
+                      <div><h5 id='heart_last' ></h5></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <section>
+      <div class="container">
+          <div class="row">
+              <div class="row pt-5">
+                  <div class="col-md-12 align-self-center">
+                      <h3>Temperature & Humidity</h3>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <section>
+      <div class="container">
+
+          <div>
+              <div class="row pt-5">
+                  <div class="col-md-6">
+                      <canvas width="500" height="400" id="myTempChart"></canvas>
+                  </div>
+                  <div class="col-md-6">
+                      <div><h5>현재 아기 체온(ºC)</h5></div>
+                      <div><h5 id='temp_last' ></h5></div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="row pt-5">
+              <div class="col-md-6">
+                  <canvas width="500" height="400" id="myHumChart"></canvas>
+              </div>
+              <div class="col-md-6">
+                      <div><h5>현재 아기 습도(%)</h5></div>
+                      <div><h5 id='hum_last' ></h5></div>
+                  </div>
+          </div>
+      </div>
+  </section>
+</div> -->
+    <script>
+        // read heart data from aws DB
+           /* getData("/sensor/heart/select", {}, function(data){
+                var parsed_data = parseHeartData(data);
+                console.log("data of parsed_data", parsed_data);
+
+                // data format preprocessing
+                // remove '2019', 'GMT'
+                for(var i=0, item; item=parsed_data[0][i]; i++) {
+                  // alert(item)
+                  item = item.replace( '2019 ', '')
+                  item = item.replace( ' GMT', '')
+                  parsed_data[0][i] = item
+        }
+
+                drawLineChart(parsed_data[0], parsed_data[1], "bpm", "#myHeartChart", 'rgb(255, 99, 132)');
+
+                // display current heart sense
+                var heart_last = parsed_data[1][9];
+                $('#heart_last').html(heart_last + " BPM");
+            });
+
+            getData("/sensor/temp/select", {}, function(data){
+                var parsed_data = parseTempData(data);
+                console.log("data", parsed_data);
+                drawLineChart(parsed_data[0], parsed_data[1], "temperature", "#myTempChart", 'rgb(54, 162, 235)');
+                drawLineChart(parsed_data[0], parsed_data[2], "humidity", "#myHumChart", 'rgb(255, 206, 86)');
+
+                // display current hum and temp sense
+                var temp_last = parsed_data[1][9];
+                var hum_last = parsed_data[2][9];
+                $('#temp_last').html(temp_last + " ºC");
+                $('#hum_last').html(hum_last + " %" );
+            });*/
+
+
+            //$.ajax().done().fail()
+            //ajax를 이용하여 서버에서 data 받기 위한 함수 getData 기본 구조
+            //data : 통신데이터가 data 변수에 자동 저장됨
+            function getData(uri, data, fun){
+                $.ajax({
+                    url : "http://localhost:5000" + uri,
+                    method : "GET",
+                    data : JSON.stringify(data),
+                    dataType : "json",
+                    contentType : "application/json"
+                }).done(function (returnData) {
+                    if(fun) {
+                        fun(returnData);
+                    }
+                }).fail(function() {
+                    console.log("fail getData");
+
+                    //실패했을 때 할 일은 필요없으므로 주석처리
+                    // if(fun){
+                    //     fun();
+                    // }
+                }).always(function() {
+
+                });
+            };
+
+            //서버로부터 받은 데이터에서 "value" key 값만 parsing
+            function parseHeartData(serverData){
+                var dataList_bpm = [];
+                var dataList_datetime = [];
+                var dataList = [];
+                for (var data of serverData.values) {
+                    dataList_bpm.push(data.bpm);
+                    dataList_datetime.push(data.datetime);
+                }
+
+                dataList.push(dataList_datetime);
+                dataList.push(dataList_bpm);
+
+                return dataList
+            }
+
+            function parseTempData(serverData){
+                var dataList_temp = [];
+                var dataList_hum = [];
+                var dataList_datetime = [];
+                var dataList = [];
+                for (var data of serverData.values) {
+                    dataList_temp.push(data.temp);
+                    dataList_hum.push(data.hum);
+                    dataList_datetime.push(data.datetime);
+                }
+
+                dataList.push(dataList_datetime);
+                dataList.push(dataList_temp);
+                dataList.push(dataList_hum);
+
+                return dataList
+            }
+
+            function drawList(chartData){
+                var list = document.querySelector(".list-group");
+                while(list.firstChild) {
+                    list.removeChild(list.firstChild);
+                }
+
+                for(var item of chartData){
+                    //$(list).append(`<li class="list-group-item">${item}</li>`);
+                    $(list).append('<li class="list-group-item">' + item + '</li>');
+                }
+            }
+
+            function drawLineChart(chartLabels, chartData, label_name, chartID, chart_color){
+               //DOM 추출 - <id = 'myLineChart'>
+                var lineCanvas = document.querySelector(chartID);
+
+                if( label_name == 'temperature'){
+
+                }else if(label_name == 'humidity'){
+
+                }
+                new Chart(
+                    lineCanvas,{
+                        type : 'line',
+                        data : {
+                            labels: chartLabels,
+                            datasets : [{
+                                label : label_name,
+                                data : chartData,
+                                // backgroundColor :'rgba(255, 99, 132, 0.2)',
+                                // fill : false,
+                                // borderColor : 'rgba(255, 206, 86, 1)'
+                                backgroundColor: chart_color,
+                                fill:false, // line의 아래쪽을 색칠할 것인가?
+                                borderColor: chart_color,
+                                lineTension:0.3, // 값을 높이면, line의 장력이 커짐.
+                            }]
+                        },
+                        options: {
+
+                        }
+                    }
+                );
+            }
+
+            $(function(){
+              // $('#btn_search_test').click(function(){
+              //   var DOM_name_data = $('#name')
+              //   var DOM_age_data = $('#age')
+              //   var user_name_data = DOM_name_data.val()
+              //   var user_age_data = DOM_age_data.val()
+              //   var u_id = 1
+
+              //   $.ajax({
+              //       url:'./show',
+              //       method:"GET",
+              //       data : JSON.stringify({
+              //           'u_id': u_id,
+              //           'u_age': user_age_data,
+              //           'u_name': user_name_data
+              //       }),
+              //       dataType:"json",
+              //       success:function(data){
+              //           alert("OK")
+              //       }
+              //   })
+              // })
+              // search 버튼에 클릭하면 데이터 뿌리는 부분.
+              $("#btn_search").click(function(){
+                var DOM_name_data = $('#search_name')
+                var DOM_age_data = $('#search_age')
+                var user_name_data = DOM_name_data.val()
+                var user_age_data = DOM_age_data.val()
+
+                var user_Data = {
+                    u_name : user_name_data,
+                    u_age : user_age_data
+                }
+
+                //var user_Data = [user_name_data,user_age_data]
+
+                  // check user name null or not null
+                  if(user_name_data == ''){
+                    alert('need babyname'); DOM_name_data.focus()
+                    return false
+                  }else{
+                    // check name from aws DB
+                    // get u_id related to name
+                    // getData()
+                    $.ajax({
+                          url : "./name_check",
+                          method : "POST",
+                          data : JSON.stringify(user_Data),
+                          dataType : "json",
+                          contentType : "application/json"
+                      }).done(function (returnData) {
+                        console.log(returnData)
+                        u_id = returnData['u_id']
+                        u_age = returnData['u_age']
+                        u_name = returnData['u_name']
+
+                        console.log(u_id);
+                        console.log("input name "+ u_name);
+                        console.log("json name "+ user_name_data);
+
+                        if(u_name != user_name_data){
+                          alert("존재 하지 않는 아기입니다.")
+                          return false
+                        }else{
+                          if(u_age != user_age_data){
+                            alert("나이가 맞지 않습니다.")
+                            $('#age').focus()
+                            return false
+                          }
+                        }
+
+                        console.log("input name "+u_name);
+                        console.log("json name "+user_name_data);
+
+                        // get heart data
+                        if(u_name == user_name_data && u_age == user_age_data){
+                            alert(u_name + "님 환영 합니다")
+
+                            var get_querystring = '?'
+                            get_querystring+= "u_id="
+                            get_querystring+= u_id
+
+                            location.href='./show' + get_querystring
+                            // // page move to heart.html
+                            // $.ajax({
+                            //     // url: "./show?"+"u_id="+u_id+"&"+"u_age="+u_age+"&"+"u_name="+u_name,
+                            //     url: "./show",
+                            //     method : "GET",
+                            //     data : JSON.stringify(returnData),
+                            //     dataType : "json",
+                            //     contentType : "application/json",
+                            //     success: function(data){
+                            //         alert('123')
+                            //     }
+                            // })
+
+                            getData("/sensor/heart/select/"+u_id, {}, function(data){
+                              var parsed_data = parseHeartData(data);
+                              // console.log("data of parsed_data", parsed_data);
+
+                              // data format preprocessing
+                              // remove '2019', 'GMT'
+                              for(var i=0, item; item=parsed_data[0][i]; i++) {
+                                // alert(item)
+                                item = item.replace( '2019 ', '')
+                                item = item.replace( ' GMT', '')
+                                parsed_data[0][i] = item
+                              }
+
+                              drawLineChart(parsed_data[0], parsed_data[1], "bpm", "#myHeartChart", 'rgb(255, 99, 132)');
+
+                              // display current heart sense
+                              var heart_last = parsed_data[1][parsed_data[0].length-1];
+                              $('#heart_last').html(heart_last + " BPM");
+                            });
+
+                            // get temp and hum data
+                            getData("/sensor/temp/select/"+u_id, {}, function(data){
+                              var parsed_data = parseTempData(data);
+                              console.log("data", parsed_data);
+                              drawLineChart(parsed_data[0], parsed_data[1], "temperature", "#myTempChart", 'rgb(54, 162, 235)');
+                              drawLineChart(parsed_data[0], parsed_data[2], "humidity", "#myHumChart", 'rgb(255, 206, 86)');
+
+                              // display current hum and temp sense
+                              var temp_last = parsed_data[1][parsed_data[0].length-1];
+                              var hum_last = parsed_data[2][parsed_data[0].length-1];
+                              $('#temp_last').html(temp_last + " ºC");
+                              $('#hum_last').html(hum_last + " %" );
+                            });
+
+                            var DOM_hidden_area = $('#hidden_div')
+                            if( DOM_hidden_area.css('display') == 'none' ){
+                              DOM_hidden_area.show();
+                            }
+                       }
+                      // end of done
+                      }).fail(function() {
+                        console.log("fail getData");
+
+                        //실패했을 때 할 일은 필요없으므로 주석처리
+                        // if(fun){
+                        //     fun();
+                        // }
+                    })
+
+                  } // end of else
+              }) // end of click event
+          })
+          // end of jquery
+    </script>
+
+{% endblock %}

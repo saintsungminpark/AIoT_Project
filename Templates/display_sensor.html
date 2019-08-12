@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{title}}</title>
+    
+    <script  
+            src="https://code.jquery.com/jquery-3.4.1.min.js"  
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="  
+            crossorigin="anonymous">
+    </script>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body>
+   
+
+    <!-- <nav>
+
+    </nav> -->
+    <!-- <header class = "p-4">
+        <div class="container bg-dark text-light">
+            <div class="row">
+                <div class="col-md-5 text-right">
+                    <h2>  Baby Name ?  </h2>
+                </div>
+                <div class="col-md-7 text-center align-self-center">
+                    <div class="input-group" style="text-center">
+                        <input type="text" name="u_name" id="input_data">
+                        <button class="input-group-append btn btn-dark" id='search'>Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header> -->
+    
+    <!-- <div id='hidden_div' style='display:none'> -->
+    <br><br><br><br>
+    <div id='hidden_div' style='display:none'>
+        <section>
+            <div class="container">
+                <div class="row">
+                    <!-- <div class="row pt-5"> -->
+                        <div class="col-xl-12 align-self-center">
+                            <h1 style="text-align: center;"><b>Heart Rate</b></h1>
+                        </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+        </section><br><br><br>
+
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12 align-self-center">
+                    <!-- <div class="col-md-6"> -->
+                        <canvas width="700" height="400" id="myHeartChart"></canvas>
+                    </div>
+                </div><br><br>
+                    <!-- <div class="col-md-6"> -->
+                        <!-- <div><h5 style="text-align:center;">현재 아기의 심박수(bpm)</h5></div> -->
+                        <div><h5 id='heart_last' style="text-align:center; color:#ff6384; font-size: 50px"></h5></div>
+                    </div>
+                </div>
+            </div>
+        </section><br><br><br><br><div class="container"><hr></div><br><br><br><br>
+
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12 align-self-center">
+                    <!-- <div class="row pt-5"> -->
+                        <div class="col-md-12 align-self-center">
+                            <h1 style="text-align: center;"><b>Temperature</b></h1>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+        </section><br><br>
+
+        <section>
+            <div class="container">
+                <div class="row pt-5">
+                    <div class="col-xl-12 align-self-center">
+                    <!-- <div class="col-md-6"> -->
+                        <canvas width="700" height="400" id="myTempChart"></canvas>
+                    </div>
+                </div><br><br>
+                    <!-- <div class="col-md-6"> -->
+                        <!-- <div><h5 style="text-align:center;">현재 아기 체온(ºC)</h5></div> -->
+                        <div><h5 id='temp_last' style="text-align:center; color:#ffce56; font-size: 50px"></h5></div>
+                    </div>
+                </div>
+            </div>
+        </section><br><br><br><br><div class="container"><hr></div><br><br><br><br>
+            
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 align-self-center">
+                    <!-- <div class="row pt-5"> -->
+                        <div class="col-md-12 align-self-center">
+                            <h1 style="text-align: center;"><b>Humidity</b></h1>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+        </section><br><br>
+            
+        <section>
+            <div class="container">  
+                <div class="row pt-5">
+                    <div class="col-md-12 align-self-center">
+                    <!-- <div class="col-md-6"> -->
+                        <canvas width="700" height="400" id="myHumChart"></canvas>
+                    </div>
+                </div><br><br>
+                    <!-- <div class="col-md-6"> -->
+                        <!-- <div><h5 style="text-align:center;">현재 아기 습도(%)</h5></div> -->
+                        <div><h5 id='hum_last' style="text-align:center; color:#36a2eb; font-size: 50px"></h5></div>
+                    </div>
+                </div>
+            </div>
+        </section><br><br><br><br>
+    </div>
+    
+    
+    <script>
+        // get query string from URL
+        // in this case, u_id
+        const params = new URLSearchParams(window.location.search);  
+        const u_id = params.get("u_id");  
+
+        // data format preprocessing
+        // remove '2019', 'GMT'
+        function reformat( parsed_data ){
+          for(var i=0, item; item=parsed_data[i]; i++) {
+            // alert(item)
+            item = item.replace( '2019 ', '').replace( ' GMT', '')
+            parsed_data[i] = item
+          }
+          return parsed_data
+        }
+
+        // setInterval start
+        var timerId = null;
+        var timerId1 = null;
+        getData("/sensor/heart/select/"+u_id, {}, function(data){
+          var parsed_data = parseHeartData(data);
+          // console.log("data of parsed_data", parsed_data);
+          parsed_data[0] = reformat(parsed_data[0])
+
+          drawLineChart(parsed_data[0], parsed_data[1], "Heart rate of baby in present", "#myHeartChart", 'rgb(255, 99, 132)');
+
+          // display current heart sense
+          var heart_last = parsed_data[1][parsed_data[0].length-1];
+          $('#heart_last').html(heart_last + " BPM");
+        });
+        function draw_chart_heart(u_id){
+            // getData("/sensor/heart/select/"+u_id, {}, draw_chart(data))
+            // getData1("/sensor/heart/select/"+u_id, {})
+            getData("/sensor/heart/select/"+u_id, {}, function(data){
+                var parsed_data = parseHeartData(data);
+                console.log("data of parsed_data ", parsed_data);
+                parsed_data[0] = reformat(parsed_data[0])
+                var timer = null
+                // timer = setInterval(drawLineChart(parsed_data[0], parsed_data[1], "Heart rate of baby in present", "#myHeartChart", 'rgb(255, 99, 132)'), 3100)
+                drawLineChart(parsed_data[0], parsed_data[1], "Heart rate of baby in present", "#myHeartChart", 'rgb(255, 99, 132)');
+
+                // display current heart sense
+                // var heart_last = parsed_data[1][(parsed_data[0].length)-1];
+                var heart_last = parsed_data[1][0];
+                $('#heart_last').html(heart_last + " BPM");
+            })
+        }
+        // timerId = setInterval(a(u_id), 3000)
+        // setInterval(function(u_id){
+        //     draw_chart_heart(u_id)
+        // },2000)
+        // function start_draw(u_id){
+            
+        //     draw_chart_heart(u_id)
+            // getData1("/sensor/heart/select/"+u_id, {})
+            // timerId = setTimeout(start_draw, 3000)
+        // }
+        // start_draw(u_id)
+        // draw_chart_heart(u_id)
+
+        // function setLabels(labels) {
+        //     var nextMonthIndex = months.indexOf(labels[labels.length - 1]) + 1;
+        //     var nextMonthName = months[nextMonthIndex] != undefined ? months[nextMonthIndex] : "January";
+        //     labels.push(nextMonthName);
+        //     labels.shift();
+        //   }
+
+          // function setData(data) {
+          //   var parsed_data = parseHeartData(data);
+
+          //   data.push(parsed_data[1]);
+          //   data.shift();
+          // } 192.168.3.7
+
+        // getData1("/sensor/heart/select/"+u_id, {})
+
+        function draw_chart(data){
+          var parsed_data = parseHeartData(data);
+          console.log("data of parsed_data ", parsed_data);
+          parsed_data[0] = reformat(parsed_data[0])
+          var timer = null
+          // timer = setInterval(drawLineChart(parsed_data[0], parsed_data[1], "Heart rate of baby in present", "#myHeartChart", 'rgb(255, 99, 132)'), 3100)
+          var chrt =  drawLineChart(parsed_data[0], parsed_data[1], "Heart rate of baby in present", "#myHeartChart", 'rgb(255, 99, 132)');
+
+          // display current heart sense
+          // var heart_last = parsed_data[1][(parsed_data[0].length)-1];
+          var heart_last = parsed_data[1][0];
+          $('#heart_last').html(heart_last + " BPM");
+        }
+
+        // get temp and hum data
+        getData("/sensor/temp/select/"+u_id, {}, function(data){
+          var parsed_data = parseTempData(data);
+          console.log("data", parsed_data);
+
+          parsed_data[0] = reformat(parsed_data[0])
+          drawLineChart(parsed_data[0], parsed_data[1], "Temperature of baby in present", "#myTempChart", 'rgb(255, 206, 86)');
+          drawLineChart(parsed_data[0], parsed_data[2], "Humidity of baby in present", "#myHumChart", 'rgb(54, 162, 235)');
+
+          // display current hum and temp sense
+          // var temp_last = parsed_data[1][parsed_data[0].length-1];
+          var temp_last = parsed_data[1][0];
+          // var hum_last = parsed_data[2][parsed_data[0].length-1];
+          var hum_last = parsed_data[2][0];
+          $('#temp_last').html(temp_last + " ºC");
+          $('#hum_last').html(hum_last + " %" );
+        });
+
+        var DOM_hidden_area = $('#hidden_div')
+        if( DOM_hidden_area.css('display') == 'none' ){
+          DOM_hidden_area.show();
+        }
+            // getData("/sensor/heart/select", {}, function(data){
+            //     var parsed_data = parseHeartData(data);
+            //     console.log("data", parsed_data);
+            //     drawLineChart(parsed_data[0], parsed_data[1], "bpm", "#myHeartChart", 'rgb(255, 99, 132)');
+
+            //     var heart_last = parsed_data[1][9];   
+            //     $('#heart_last').html(heart_last);             
+            // });
+
+            // getData("/sensor/temp/select", {}, function(data){
+            //     var parsed_data = parseTempData(data);
+            //     console.log("data", parsed_data);
+            //     drawLineChart(parsed_data[0], parsed_data[1], "temperature", "#myTempChart", 'rgb(54, 162, 235)');
+            //     drawLineChart(parsed_data[0], parsed_data[2], "humidity", "#myHumChart", 'rgb(255, 206, 86)');
+
+            //     var temp_last = parsed_data[1][9];
+            //     var hum_last = parsed_data[2][9];
+            //     $('#temp_last').html(temp_last);
+            //     $('#hum_last').html(hum_last);
+            // });
+
+            // //$.ajax().done().fail()
+            // //ajax를 이용하여 서버에서 data 받기 위한 함수 getData 기본 구조
+            // //data : 통신데이터가 data 변수에 자동 저장됨
+            function getData(uri, data, fun){
+                $.ajax({
+                    url : "." + uri,
+                    method : "GET",
+                    data : JSON.stringify(data),
+                    dataType : "json",
+                    contentType : "application/json"
+                }).done(function (returnData) {
+                    if(fun) {
+                        fun(returnData);
+                    }
+
+                }).fail(function() {
+                    console.log("fail getData");
+
+                    //실패했을 때 할 일은 필요없으므로 주석처리
+                    // if(fun){
+                    //     fun();
+                    // }
+                }).always(function() {
+
+                });
+            };
+            function getData1(uri, data){
+                $.ajax({
+                    url : "." + uri,
+                    method : "GET",
+                    data : JSON.stringify(data),
+                    dataType : "json",
+                    contentType : "application/json"
+                }).done(function (returnData) {
+                    draw_chart(returnData)
+
+                    // var timerId = setTimeout(getData1("." + uri, {}), 5000)
+
+                }).fail(function() {
+                    console.log("fail getData");
+
+                    //실패했을 때 할 일은 필요없으므로 주석처리
+                    // if(fun){
+                    //     fun();
+                    // }
+                }).always(function() {
+
+                });
+            };
+
+            // //서버로부터 받은 데이터에서 "value" key 값만 parsing
+            function parseHeartData(serverData){
+                var dataList_bpm = [];
+                var dataList_datetime = [];
+                var dataList = [];
+                for (var data of serverData.values) {
+                    dataList_bpm.push(data.bpm);
+                    dataList_datetime.push(data.datetime);
+                }
+
+                dataList.push(dataList_datetime);
+                dataList.push(dataList_bpm);
+
+                return dataList
+            }
+
+            function parseTempData(serverData){
+                var dataList_temp = [];
+                var dataList_hum = [];
+                var dataList_datetime = [];
+                var dataList = [];
+                for (var data of serverData.values) {
+                    dataList_temp.push(data.temp);
+                    dataList_hum.push(data.hum);
+                    dataList_datetime.push(data.datetime);
+                }
+
+                dataList.push(dataList_datetime);
+                dataList.push(dataList_temp);
+                dataList.push(dataList_hum);
+
+                return dataList
+            }
+
+            function drawList(chartData){
+                var list = document.querySelector(".list-group");
+                while(list.firstChild) {
+                    list.removeChild(list.firstChild);
+                }
+
+                for(var item of chartData){
+                    //$(list).append(`<li class="list-group-item">${item}</li>`);
+                    $(list).append('<li class="list-group-item">' + item + '</li>');
+                }
+            }
+
+            function drawLineChart(chartLabels, chartData, label_name, chartID, chart_color){
+               //DOM 추출 - <id = 'myLineChart'>
+                var lineCanvas = document.querySelector(chartID);
+                var chrt = new Chart(
+                    lineCanvas,{
+                        type : 'line',
+                        data : {
+                            labels: chartLabels,
+                            datasets : [{
+                                label : label_name,
+                                data : chartData,
+                                
+                                // backgroundColor :'rgba(255, 99, 132, 0.2)',
+                                // fill : false,
+                                // borderColor : 'rgba(255, 206, 86, 1)'
+                                backgroundColor: chart_color,
+                                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                                
+                                borderColor: chart_color,
+                                lineTension:0.3, // 값을 높이면, line의 장력이 커짐.
+<<<<<<< HEAD
+                            }]
+                        },
+                        options:{
+                            legend : {
+                                labels: {
+                                    fontColor: '#000',
+                                    
+                                },
+                                position: "bottom"
+=======
+                            }],
+                        
+                        },
+                        options:{
+                            legend:{
+                                position:"bottom"
+>>>>>>> c822a26324c3a2558cad2a596bc4a3e7c55c5d3f
+                            }
+                        }
+                    }
+                );
+                return chrt
+            }
+            
+    </script>
+</body>
+</html>
