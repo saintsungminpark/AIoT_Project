@@ -1,4 +1,4 @@
-# AIoT_Project - babycare
+# AIoT_Project - Babycare
 AIoT 제품개발과정 5조 베이비케어시스템
 
 # Structure
