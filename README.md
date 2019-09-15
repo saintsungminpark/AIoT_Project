@@ -4,18 +4,20 @@ AIoT 제품개발과정 5조 베이비 케어 시스템
 ## Structure
 ### pages
 1. index.html
-	- layout_index.html상속
+	- layout_index.html 상속
 2. join.html
-	- layout_join.html상속
+	- layout_join.html 상속
 3. search.html
-	- layout_search.html상속
+	- layout_search.html 상속
 css, js는 layout_*.html에서 작성.
+
 ### APIs
 1. main.py
 2. page_routes.py
 	- page 렌더링
 2. sensorDataAPI.py
 	- DB select, insert, delete, update
+	
 ### etc
 common_head.html에서 필요한 외부 JS, CSS Library 추가.
 
