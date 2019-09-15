@@ -28,7 +28,7 @@ arduino and raspberry
 2.
 3.
 
-## 아두이노센서
+## Arduino Sensor
 
 심장박동
 온/습도
