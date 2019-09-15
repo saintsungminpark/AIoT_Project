@@ -18,9 +18,11 @@ css, js는 layout_*.html에서 작성.
 	- DB select, insert, delete, update
 ### etc
 1. common_head.html에서 필요한 외부 JS, CSS Library 추가.
+
 ## Arduino Sensor
 심장박동
 온/습도
 자이로
+
 ## Web
 [http://ec2-3-19-73-118.us-east-2.compute.amazonaws.com:5000/](http://ec2-3-19-73-118.us-east-2.compute.amazonaws.com:5000/)
