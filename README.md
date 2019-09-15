@@ -22,9 +22,10 @@ CSS, JS는 layout_*.html에서 작성.
 common_head.html에서 필요한 외부 JS, CSS Library 추가.
 
 ## Arduino Sensor
-- [x] 심장박동
-- [x] 온/습도
-- [ ] 자이로
+- [x] 심장박동(WAT-S019, GROVE-Finger-clip Heart Rate Sensor with shell)
+- [x] 온/습도(DHT-11)
+- [x] 사운드(LM393)
+- [ ] 자이로(MPU6050 or STM32 Kalman)
 
 ## Web
 [http://ec2-3-19-73-118.us-east-2.compute.amazonaws.com:5000](http://ec2-3-19-73-118.us-east-2.compute.amazonaws.com:5000)
