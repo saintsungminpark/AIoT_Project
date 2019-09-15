@@ -25,4 +25,4 @@ css, js는 layout_*.html에서 작성.
 자이로
 
 ## Web
-[http://ec2-3-19-73-118.us-east-2.compute.amazonaws.com:5000/](http://ec2-3-19-73-118.us-east-2.compute.amazonaws.com:5000/)
+[http://ec2-3-19-73-118.us-east-2.compute.amazonaws.com:5000](http://ec2-3-19-73-118.us-east-2.compute.amazonaws.com:5000)
