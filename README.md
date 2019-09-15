@@ -29,3 +29,10 @@ common_head.html에서 필요한 외부 JS, CSS Library 추가.
 
 ## Web
 [http://ec2-3-19-73-118.us-east-2.compute.amazonaws.com:5000](http://ec2-3-19-73-118.us-east-2.compute.amazonaws.com:5000)
+
+![ex_screenshot](./screenshot1.JPG)
+![ex_screenshot](./screenshot2.JPG)
+![ex_screenshot](./screenshot3.JPG)
+![ex_screenshot](./screenshot4.JPG)
+![ex_screenshot](./screenshot5.JPG)
+![ex_screenshot](./screenshot6.JPG)
