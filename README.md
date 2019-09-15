@@ -9,7 +9,7 @@ AIoT 제품개발과정 5조 베이비 케어 시스템
 	- layout_join.html 상속
 3. search.html
 	- layout_search.html 상속
-css, js는 layout_*.html에서 작성.
+CSS, JS는 layout_*.html에서 작성.
 
 ### APIs
 1. main.py
