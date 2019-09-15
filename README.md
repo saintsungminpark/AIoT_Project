@@ -15,9 +15,13 @@ AIoT 제품개발과정 5조 베이비케어시스템
 
 ### APIs
 1. main.py
+
 2. page_routes.py
+	
 	- page 렌더링
+
 2. sensorDataAPI.py
+	
 	- DB select, insert, delete, update
 
 ### etc
