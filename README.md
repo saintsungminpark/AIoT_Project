@@ -1,8 +1,7 @@
 # Babycare
-AIoT 제품개발과정 5조 베이비케어시스템
+AIoT 제품개발과정 5조 베이비 케어 시스템
 
 ## Structure
-
 ### pages
 1. index.html
 	- layout_index.html상속
@@ -11,7 +10,7 @@ AIoT 제품개발과정 5조 베이비케어시스템
 3. search.html
 	- layout_search.html상속
 
-	css, js는 layout_*.html에서 작성.
+css, js는 layout_*.html에서 작성.
 
 ### APIs
 1. main.py
