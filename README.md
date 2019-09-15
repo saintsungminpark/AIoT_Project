@@ -1,7 +1,7 @@
 # Babycare
 AIoT 제품개발과정 5조 베이비케어시스템
 
-# Structure
+## Structure
 
 pages
 1. index.html
@@ -28,8 +28,11 @@ arduino and raspberry
 2.
 3.
 
-# 아두이노센서
+## 아두이노센서
 
 심장박동
 온/습도
 자이로
+
+## Web
+[http://ec2-3-19-73-118.us-east-2.compute.amazonaws.com:5000/]
