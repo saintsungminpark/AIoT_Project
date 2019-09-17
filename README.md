@@ -1,5 +1,5 @@
 # Babycare
-AIoT 제품개발과정 5조 베이비 케어 시스템
+AIoT 제품개발과정 Project
 
 ## Structure
 ### pages
