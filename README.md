@@ -1,5 +1,5 @@
 # Babycare
-AIoT 제품개발과정 Project
+Project for Baby care system
 
 ## Structure
 ### pages
