@@ -29,6 +29,9 @@ common_head.html에서 필요한 외부 js, css library 추가.
 - [ ] 자이로(mpu6050 or stm32 kalman)
 
 
+
+
+
 ## web
 [http://ec2-3-19-73-118.us-east-2.compute.amazonaws.com:5000](http://ec2-3-19-73-118.us-east-2.compute.amazonaws.com:5000)
 
