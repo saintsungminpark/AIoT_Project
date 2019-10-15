@@ -15,7 +15,7 @@ css, js는 layout_*.html에서 작성.
 1. main.py
 2. page_routes.py
 	- page 렌더링
-2. sensordataapi.py
+2. sensorDataAPI.py
 	- db select, insert, delete, update
 	
 ### etc
