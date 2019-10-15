@@ -1,7 +1,5 @@
 # babycare
-project for baby care system  
-  
-  
+project for baby care system
 ## structure
 ### pages
 1. index.html
