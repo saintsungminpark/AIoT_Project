@@ -1,5 +1,5 @@
 # babycare
-Project for Baby care system
+project for baby care system
 
 ## structure
 ### pages
